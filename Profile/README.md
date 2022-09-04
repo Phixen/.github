@@ -1,4 +1,7 @@
 ## Phixen
-# Stats
+Introduction
 
-![Metrics](../github-metrics.svg)
+
+## Stats
+
+![Metrics](./github-metrics.svg)

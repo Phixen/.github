@@ -12,13 +12,6 @@ jobs:
     steps:
       - uses: lowlighter/metrics@latest
         with:
-          # Your GitHub token
-          # The following scopes are required:
-          #  - public_access (default scope)
-          # The following additional scopes may be required:
-          #  - read:org  (for organization related metrics)
-          #  - read:user (for user related data)
-          #  - repo      (optional, if you want to include private repositories)
           token: ${{ secrets.METRICS_TOKEN }}
           plugin_stargazers: yes
           plugin_people: yes
@@ -29,4 +22,4 @@ jobs:
           plugin_followup_archived: no
           plugin_contributors: yes
           # Options
-          user: github
+          user: keploy

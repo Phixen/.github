@@ -11,17 +11,9 @@ jobs:
     steps:
       - uses: lowlighter/metrics@latest
         with:
-          filename: metrics.plugin.contributors.contributions.svg
+          filename: metrics.plugin.contributors.svg
           token: ${{ secrets.METRICS_TOKEN }}
           base: ""
-          template: repository
-          repo: metrics
-          plugin_contributors: yes
-          plugin_contributors_sections: categories
-          plugin_contributors_categories: |
-            {
-              "📚 Documentation": ["README.md", "docs/**"],
-              "💻 Code": ["source/**", "src/**"],
-              "#️⃣ Others": ["*"]
-            }
-            user: keploy
+          plugin_people: yes
+          plugin_people_types: followers
+          user: keploy

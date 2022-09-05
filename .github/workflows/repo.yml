@@ -13,7 +13,5 @@ jobs:
         with:
           filename: metrics.plugin.contributors.svg
           token: ${{ secrets.METRICS_TOKEN }}
-          base: ""
-          plugin_people: yes
-          plugin_people_types: followers
+          plugin_contributors: yes
           user: keploy

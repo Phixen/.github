@@ -21,5 +21,11 @@ jobs:
           plugin_followup: yes
           plugin_followup_archived: no
           plugin_contributors: yes
+          plugin_contributors_categories: |
+            {
+              "📚 Documentation": ["README.md", "docs/**"],
+              "💻 Code": ["source/**", "src/**"],
+              "#️⃣ Others": ["*"]
+            }
           # Options
           user: keploy

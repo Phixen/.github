@@ -11,7 +11,13 @@ jobs:
     steps:
       - uses: lowlighter/metrics@latest
         with:
-          filename: metrics.plugin.contributors.svg
+          filename: metrics.plugin.contributors.categories.svg
           token: ${{ secrets.METRICS_TOKEN }}
+          base: ""
+          template: repository
+          repo: keploy
           plugin_contributors: yes
+          plugin_contributors_contributions: yes
+          output_action: none
+          delay: 120
           user: keploy

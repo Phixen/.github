@@ -18,7 +18,7 @@ jobs:
           plugin_stargazers_charts: no
           plugin_stargazers_worldmap: yes
           plugin_stargazers_worldmap_token: ${{ secrets.GOOGLE_MAP_TOKEN }}
-          plugin_stargazers_worldmap_sample: 200
+          plugin_stargazers_worldmap_sample: 10
           plugin_followup: yes
           plugin_followup_archived: no
           # Options

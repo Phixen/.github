@@ -10,21 +10,12 @@ jobs:
   github-metrics:
     runs-on: ubuntu-latest
     steps:
-      - name: Head
-        uses: lowlighter/metrics@latest
+     -  uses: lowlighter/metrics@latest
         with:
           token: ${{ secrets.METRICS_TOKEN }}
           base: header, repositories
           plugin_followup: yes
           plugin_followup_archived: no
-          # Options
-          user: keploy
-      - name: ✨ Stargazers - With worldmap
-        uses: lowlighter/metrics@master
-        with:
-          filename: metrics.plugin.stargazers.worldmap.svg
-          token: ${{ secrets.METRICS_TOKEN }}
-          base: ""
           plugin_stargazers: yes
           plugin_stargazers_charts: no
           plugin_stargazers_worldmap: yes

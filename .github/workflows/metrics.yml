@@ -33,5 +33,3 @@ jobs:
           output_action: none
           delay: 120
           user: keploy
-          plugins_errors_fatal: yes
-          if: ${{ success() || failure() }}

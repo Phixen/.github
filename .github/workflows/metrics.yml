@@ -10,17 +10,15 @@ jobs:
   github-metrics:
     runs-on: ubuntu-latest
     steps:
-     -  uses: lowlighter/metrics@latest
+      - uses: lowlighter/metrics@latest
         with:
           token: ${{ secrets.METRICS_TOKEN }}
           base: header, repositories
           plugin_followup: yes
           plugin_followup_archived: no
-          plugin_stargazers: yes
-          plugin_stargazers_charts: no
+          plugin_stargazers: yes  
+          plugin_stargazers_charts: yes
           plugin_stargazers_worldmap: yes
           plugin_stargazers_worldmap_token: ${{ secrets.GOOGLE_MAP_TOKEN }}
-          plugin_stargazers_worldmap_sample: 200
-          output_action: none
-          delay: 120
+          plugin_stargazers_worldmap_sample: 250
           user: keploy

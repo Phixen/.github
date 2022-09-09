@@ -23,7 +23,7 @@ jobs:
       - name: Main1
         uses: lowlighter/metrics@latest
         with:
-          filename: metrics.plugin.contributors.svg
+          filename: metrics.plugin.contributors1.svg
           token: ${{ secrets.METRICS_TOKEN }}
           base: ""
           template: repository
@@ -34,7 +34,7 @@ jobs:
       - name: Main2
         uses: lowlighter/metrics@latest
         with:
-          filename: metrics.plugin.contributors.svg
+          filename: metrics.plugin.contributors2.svg
           token: ${{ secrets.METRICS_TOKEN }}
           base: ""
           template: repository

@@ -9,7 +9,8 @@ jobs:
   github-metrics:
     runs-on: ubuntu-latest
     steps:
-      - uses: lowlighter/metrics@latest
+      - name: Main
+        uses: lowlighter/metrics@latest
         with:
           filename: metrics.plugin.contributors.svg
           token: ${{ secrets.METRICS_TOKEN }}
@@ -17,5 +18,27 @@ jobs:
           template: repository
           repo: keploy
           plugin_people: yes
-          plugin_people_types: contributors, stargazers, watchers
+          plugin_people_types: contributors
+          user: keploy
+      - name: Main1
+        uses: lowlighter/metrics@latest
+        with:
+          filename: metrics.plugin.contributors.svg
+          token: ${{ secrets.METRICS_TOKEN }}
+          base: ""
+          template: repository
+          repo: go-sdk
+          plugin_people: yes
+          plugin_people_types: contributors
+          user: keploy
+      - name: Main2
+        uses: lowlighter/metrics@latest
+        with:
+          filename: metrics.plugin.contributors.svg
+          token: ${{ secrets.METRICS_TOKEN }}
+          base: ""
+          template: repository
+          repo: samples-go
+          plugin_people: yes
+          plugin_people_types: contributors
           user: keploy

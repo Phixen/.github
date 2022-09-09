@@ -6,7 +6,7 @@ Introduction
 
 ![Metrics](./github-metrics.svg)
 
-![People](./metrics.plugin.contributors.svg)
+![Keploy](./metrics.plugin.contributors.svg)
+![Keploy1](./metrics.plugin.contributors1.svg)
+![Keploy2](./metrics.plugin.contributors2.svg)
 
-<!-- readme: contributors -start -->
-<!-- readme: contributors -end -->

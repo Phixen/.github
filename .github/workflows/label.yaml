@@ -18,5 +18,5 @@ jobs:
           labels: ${{ github.event.issue.labels }}
           add: ${{ github.event.issue.labels }}
           remove: ''
-          input: ${{ github.event.issue.body }}
-          regex: 'Repository:\s*(.*)'
+          input: ${{ github.event.issue.body.Repository }}
+          regex: 'Label:\s*(.*)'

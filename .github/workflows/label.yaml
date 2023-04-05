@@ -1,20 +1,22 @@
-name: Label issues
+name: Add Label based on Issue Input
+
 on:
   issues:
-    types:
-      - opened
+    types: [opened, edited]
+
 jobs:
-  label_issues:
+  add_label:
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
     steps:
-      - uses: actions/github-script@v6
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Add label based on input
+        uses: peter-evans/add-labels@v2.3.0
         with:
-          script: |
-            github.rest.issues.addLabels({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              labels: ["help wanted", "good first issue"]
-            })
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: ${{ github.event.issue.labels }}
+          add: ${{ github.event.issue.labels }}
+          remove: ''
+          input: ${{ github.event.issue.body }}
+          regex: 'Repository:\s*(.*)'

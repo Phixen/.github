@@ -1,44 +1,38 @@
-name: Repo Contributor
+name: Issue labeler
 on:
-  # Schedule updates (once at midnight)
-  schedule: [{cron: "0 0 * * *"}]
-  # Lines below let you run workflow manually and on each commit
-  workflow_dispatch:
-  push: {branches: ["master", "main"]}
+  issues:
+    types: [ opened ]
+
+permissions:
+  contents: read
+
 jobs:
-  github-metrics:
+  label-component:
     runs-on: ubuntu-latest
+
+    permissions:
+      # required for all workflows
+      issues: write
+
+      # only required for workflows in private repositories
+      actions: read
+      contents: read
+
     steps:
-      - name: Main
-        uses: lowlighter/metrics@latest
+      - uses: actions/checkout@v3
+
+      - name: Parse issue form
+        uses: stefanbuck/github-issue-parser@v3
+        id: issue-parser
         with:
-          filename: metrics.plugin.contributors.svg
-          token: ${{ secrets.METRICS_TOKEN }}
-          base: ""
-          template: repository
-          repo: keploy
-          plugin_people: yes
-          plugin_people_types: contributors
-          user: keploy
-      - name: Main1
-        uses: lowlighter/metrics@latest
+          template-path: .github/ISSUE_TEMPLATE/--bug-report.yaml
+          
+      - name: Set labels based on repository field
+        uses: redhat-plumbers-in-action/advanced-issue-labeler@v2
         with:
-          filename: metrics.plugin.contributors1.svg
-          token: ${{ secrets.METRICS_TOKEN }}
-          base: ""
-          template: repository
-          repo: go-sdk
-          plugin_people: yes
-          plugin_people_types: contributors
-          user: keploy
-      - name: Main2
-        uses: lowlighter/metrics@latest
-        with:
-          filename: metrics.plugin.contributors2.svg
-          token: ${{ secrets.METRICS_TOKEN }}
-          base: ""
-          template: repository
-          repo: samples-go
-          plugin_people: yes
-          plugin_people_types: contributors
-          user: keploy
+          issue-form: ${{ steps.issue-parser.outputs.jsonString }}
+          section: repository
+          block-list: |
+            None
+            Other
+          token: ${{ secrets.GITHUB_TOKEN }}

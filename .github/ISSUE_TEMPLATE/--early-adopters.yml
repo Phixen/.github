@@ -1,0 +1,41 @@
+name: Early Adopters
+description: Let us know how keploy has helped you.
+title: " "
+labels: [early adopters]
+body:
+- type: markdown
+  attributes:
+    value: |
+      Thank you for taking the time to fill out this report.
+- type: textarea
+  attributes:
+    label: How are you using Keploy.
+    description: Explain how keploy has solved the use cases for you
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Share the Project Link
+    description: Add the screenshots, Project URL, and Repository Link.
+  validations:
+    required: true
+- type: dropdown
+  id: env
+  attributes:
+    label: Environment
+    options:
+      - Production
+      - Release
+      - Deploy preview
+  validations:
+    required: false
+- type: dropdown
+  id: version
+  attributes:
+    label: Version
+    options:
+      - Cloud
+      - Self-hosted
+      - Local
+  validations:
+    required: true

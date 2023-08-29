@@ -1,6 +1,6 @@
 name: Early Adopters
 description: Let us know how keploy has helped you.
-title: " "
+title: "[usecases]: "
 labels: [early adopters]
 body:
 - type: markdown

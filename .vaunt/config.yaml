@@ -8,7 +8,7 @@ achievements:
     - trigger:
       actor: author
       action: commit
-      condition: count() >= 10
+      condition: count() >= 1
  - achievement:
    name: Pull Request Hero
    icon: https://raw.githubusercontent.com/keploy/keploy/main/.vaunt/badge/pull_request_hero.png
@@ -17,7 +17,7 @@ achievements:
     - trigger:
       actor: author
       action: pull_request
-      condition: count(merged = true) >= 5
+      condition: merged = true
  - achievement:
    name: Docs Maker
    icon: https://raw.githubusercontent.com/keploy/keploy/main/.vaunt/badge/docs_hero.png
@@ -26,13 +26,13 @@ achievements:
     - trigger:
       actor: author
       action: issue
-      condition: closed & labels in ['Documentation']
+      condition: closed = true & labels in ['Documentation']
  - achievement:
    name: Closer
-   icon: https://raw.githubusercontent.com/sonichigo/keploy/vaunt/.vaunt/closer.png
+   icon: https://raw.githubusercontent.com/sonichigo/keploy/vaunt/.vaunt/badge/closer.png
    description: Only closers get coffee!!
    triggers:
     - trigger:
-      actor: author
+      actor: assignees
       action: issue
-      condition: closed & labels in ['Documentation']
+      condition: closed = true

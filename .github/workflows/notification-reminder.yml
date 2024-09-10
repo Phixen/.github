@@ -81,11 +81,11 @@ jobs:
           def send_slack_reminder(activities, webhook_url):
               if not activities:
                   return
-              message = `*Reminder for the organization*\n`
-              message += f`There are {len(activities)} open PRs/issues:\n`
+              message = '*Reminder for the organization*\n'
+              message += f"There are {len(activities)} open PRs/issues:\n"
               
               for activity in activities:
-                  message += f`• {activity['type']}: <{activity['url']}|{activity['title']}>\n`
+                  message += f"• {activity['type']}: <{activity['url']}|{activity['title']}>\n"
               
               payload = {
                   'text': message,
@@ -95,10 +95,10 @@ jobs:
               
               response = requests.post(webhook_url, json=payload)
               if response.status_code != 200:
-                  print(f`Failed to send Slack message. Status code: {response.status_code}`)
-                  print(`Response: {response.text}`)
+                  print('f"Failed to send Slack message. Status code: {response.status_code}"')
+                  print('"Response: {response.text}"')
               else:
-                  print('Message sent successfully.')
+                  print('"Message sent successfully."')
           
           # Get environment variables
           github_token = os.environ['GITHUB_TOKEN']

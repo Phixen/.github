@@ -46,6 +46,7 @@ jobs:
           ORG_NAME: ${{ secrets.ORG_NAME }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
+          #!/usr/bin/env python
           import os
           import json
           import requests

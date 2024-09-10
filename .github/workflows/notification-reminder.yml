@@ -75,7 +75,6 @@ jobs:
                   return
               message = f'*Reminder for @{username}*\n'
               message += f'You have {len(activities)} unread PR/issue notifications:\n'
-              print("Starting loop logic")
               for activity in activities:
                   message += f'• {activity['type']}: <{activity['url']}|{activity['title']}>\n'
                   payload = {

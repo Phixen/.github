@@ -1,0 +1,91 @@
+name: PR and Issue Activity Reminder via Slack
+
+on:
+  schedule:
+    - cron: '0 10 */2 * *'  # Runs at 10:00 AM UTC every 2 days
+
+jobs:
+  send-reminders:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install PyGithub requests
+
+      - name: Send PR and issue activity reminders via Slack
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ORG_NAME: ${{ secrets.ORG_NAME }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          import os
+          import json
+          import requests
+          from github import Github
+
+          def get_org_members(org_name, github_token):
+              g = Github(github_token)
+              org = g.get_organization(org_name)
+              return [member.login for member in org.get_members()]
+
+          def get_pr_issue_activity(username, github_token):
+              headers = {
+                  'Authorization': f'token {github_token}',
+                  'Accept': 'application/vnd.github.v3+json'
+              }
+              params = {
+                  'per_page': 100,
+                  'participating': 'true'
+              }
+              response = requests.get(f'https://api.github.com/notifications', headers=headers, params=params)
+              notifications = response.json()
+              
+              pr_issue_activity = []
+              for notification in notifications:
+                  if notification['subject']['type'] in ['PullRequest', 'Issue']:
+                      pr_issue_activity.append({
+                          'type': notification['subject']['type'],
+                          'title': notification['subject']['title'],
+                          'url': notification['subject']['url'].replace('api.github.com/repos', 'github.com')
+                      })
+              
+              return pr_issue_activity
+
+          def send_slack_reminder(username, activities, webhook_url):
+              if not activities:
+                  return
+              
+              message = f"*Reminder for @{username}*\n"
+              message += f"You have {len(activities)} unread PR/issue notifications:\n"
+              for activity in activities:
+                  message += f"• {activity['type']}: <{activity['url']}|{activity['title']}>\n"
+              
+              payload = {
+                  "text": message,
+                  "username": "GitHub Notification Bot",
+                  "icon_emoji": ":github:"
+              }
+              
+              response = requests.post(webhook_url, json=payload)
+              if response.status_code != 200:
+                  print(f"Failed to send Slack message for {username}. Status code: {response.status_code}")
+
+          github_token = os.environ['GITHUB_TOKEN']
+          org_name = os.environ['ORG_NAME']
+          slack_webhook_url = os.environ['SLACK_WEBHOOK_URL']
+
+          org_members = get_org_members(org_name, github_token)
+
+          for member in org_members:
+              activities = get_pr_issue_activity(member, github_token)
+              if activities:
+                  send_slack_reminder(member, activities, slack_webhook_url)

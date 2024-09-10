@@ -46,74 +46,47 @@ jobs:
           ORG_NAME: ${{ secrets.ORG_NAME }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
-          #!/usr/bin/env python
-          import os
-          import json
-          import requests
-          from github import Github
-
-          print("Script started")
-          print(f"Current working directory: {os.getcwd()}")
-          print(f"Directory contents: {os.listdir()}")
-
-          def get_org_members(org_name, github_token):
-              print(f"Getting members for org: {org_name}")
-              g = Github(github_token)
-              org = g.get_organization(org_name)
-              members = list(org.get_members())
-              print(f"Found {len(members)} members")
-              return [member.login for member in members]
-
-          def get_pr_issue_activity(username, github_token):
-              print(f"Getting activity for user: {username}")
-              g = Github(github_token)
-              user = g.get_user(username)
+          python -c "
+              import os
+              import json
+              import requests
+              from github import Github
               
-              pr_issue_activity = []
-              for notification in user.get_notifications(participating=True):
-                  if notification.subject.type in ['PullRequest', 'Issue']:
-                      pr_issue_activity.append({
-                          'type': notification.subject.type,
-                          'title': notification.subject.title,
-                          'url': notification.subject.url.replace('api.github.com/repos', 'github.com')
-                      })
+              def get_org_members(org_name, github_token):
+                  g = Github(github_token)
+                  org = g.get_organization(org_name)
+                  return [member.login for member in list(org.get_members())]
               
-              print(f"Found {len(pr_issue_activity)} activities for {username}")
-              return pr_issue_activity
-
-          def send_slack_reminder(username, activities, webhook_url):
-              print(f"Sending Slack reminder for {username}")
-              if not activities:
-                  print("No activities to send")
-                  return
+              def get_pr_issue_activity(username, github_token):
+                  g = Github(github_token)
+                  user = g.get_user(username)
+                  pr_issue_activity = []
+                  for notification in user.get_notifications(participating=True):
+                      if notification.subject.type in ['PullRequest', 'Issue']:
+                          pr_issue_activity.append({
+                              'type': notification.subject.type,
+                              'title': notification.subject.title,
+                              'url': notification.subject.url.replace('api.github.com/repos', 'github.com')
+                          })
+                  return pr_issue_activity
               
-              message = f"*Reminder for @{username}*\n"
-              message += f"You have {len(activities)} unread PR/issue notifications:\n"
-              for activity in activities:
-                  message += f"• {activity['type']}: <{activity['url']}|{activity['title']}>\n"
+              def send_slack_reminder(username, activities, webhook_url):
+                  if not activities:
+                      return
+                  message = f'*Reminder for @{username}*\n'
+                  message += f'You have {len(activities)} unread PR/issue notifications:\n'
+                  for activity in activities:
+                      message += f'• {activity['type']}: <{activity['url']}|{activity['title']}>\n'
+                  payload = {'text': message, 'username': 'GitHub Notification Bot', 'icon_emoji': ':github:'}
+                  requests.post(webhook_url, json=payload)
               
-              payload = {
-                  "text": message,
-                  "username": "GitHub Notification Bot",
-                  "icon_emoji": ":github:"
-              }
+              github_token = os.environ['GITHUB_TOKEN']
+              org_name = os.environ['ORG_NAME']
+              slack_webhook_url = os.environ['SLACK_WEBHOOK_URL']
               
-              response = requests.post(webhook_url, json=payload)
-              print(f"Slack API response status code: {response.status_code}")
-              print(f"Slack API response content: {response.text}")
-              if response.status_code != 200:
-                  print(f"Failed to send Slack message for {username}. Status code: {response.status_code}")
-
-          print("Getting environment variables")
-          github_token = os.environ['GITHUB_TOKEN']
-          org_name = os.environ['ORG_NAME']
-          slack_webhook_url = os.environ['SLACK_WEBHOOK_URL']
-
-          print("Starting main logic")
-          org_members = get_org_members(org_name, github_token)
-          for member in org_members:
-              activities = get_pr_issue_activity(member, github_token)
-              if activities:
-                  send_slack_reminder(member, activities, slack_webhook_url)
-
-          print("Script execution completed.")
+              org_members = get_org_members(org_name, github_token)
+              for member in org_members:
+                  activities = get_pr_issue_activity(member, github_token)
+                  if activities:
+                      send_slack_reminder(member, activities, slack_webhook_url)
+              "

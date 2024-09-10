@@ -94,10 +94,10 @@ jobs:
               
               response = requests.post(webhook_url, json=payload)
               if response.status_code != 200:
-                  print(f"Failed to send Slack message. Status code: {response.status_code}")
-                  print(f"Response: {response.text}")
+                  print(f'Failed to send Slack message. Status code: {response.status_code}')
+                  print(f'Response: {response.text}')
               else:
-                  print("Message sent successfully.")
+                  print('Message sent successfully.')
           
           # Main execution
           if __name__ == "__main__":

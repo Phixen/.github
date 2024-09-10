@@ -99,22 +99,19 @@ jobs:
               else:
                   print('Message sent successfully.')
           
-          # Main execution
-          if __name__ == "__main__":
-              github_token = os.environ['GITHUB_TOKEN']
-              org_name = os.environ['ORG_NAME']
-              slack_webhook_url = os.environ['SLACK_WEBHOOK_URL']
+          github_token = os.environ['GITHUB_TOKEN']
+          org_name = os.environ['ORG_NAME']
+          slack_webhook_url = os.environ['SLACK_WEBHOOK_URL']
           
               # Get organization repositories
-              repositories = get_org_repositories(org_name, github_token)
-          
-              all_activities = []
-              for repo in repositories:
-                  activities = get_pr_issue_activity_from_repo(repo)
-                  all_activities.extend(activities)
+          repositories = get_org_repositories(org_name, github_token)
+          all_activities = []
+          for repo in repositories:
+                activities = get_pr_issue_activity_from_repo(repo)
+                all_activities.extend(activities)
               
-              if all_activities:
-                  send_slack_reminder(all_activities, slack_webhook_url)
+          if all_activities:
+                send_slack_reminder(all_activities, slack_webhook_url)
           "
       - name: Debug environment variables
         run: |

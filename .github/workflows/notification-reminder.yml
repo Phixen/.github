@@ -15,10 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: '3.x'
 
@@ -79,7 +79,12 @@ jobs:
                   message += f'• {activity['type']}: <{activity['url']}|{activity['title']}>\n'
                   payload={'text': 'Test message','username': 'GitHub Reminder','icon_emoji':':github:'}
                   requests.post(webhook_url, json=payload)
-                  
+                  if response.status_code != 200:
+                    print(f'Failed to send Slack message. Status code: {response.status_code}')
+                    print(f'Response: {response.text}')
+                  else:
+                    print('Message sent successfully.')
+                    
               github_token = os.environ['GITHUB_TOKEN']
               org_name = os.environ['ORG_NAME']
               slack_webhook_url = os.environ['SLACK_WEBHOOK_URL']
@@ -89,3 +94,14 @@ jobs:
               if activities:
                 send_slack_reminder(member, activities, slack_webhook_url)
           "
+      - name: Debug environment variables
+        run: |
+          echo "GITHUB_TOKEN: $GITHUB_TOKEN"
+          echo "ORG_NAME: $ORG_NAME"
+          echo "SLACK_WEBHOOK_URL: $SLACK_WEBHOOK_URL"  # Be careful not to print the entire URL for security reasons.
+          echo "Webhook length: ${#SLACK_WEBHOOK_URL}" # Check if the length is non-zero
+          echo "Partial webhook: ${SLACK_WEBHOOK_URL:0:10}..." # Print partial webhook to confirm it’s being passed
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ORG_NAME: ${{ secrets.ORG_NAME }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

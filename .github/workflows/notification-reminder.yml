@@ -87,7 +87,7 @@ jobs:
                   message += f'• {activity["type"]}: <{activity["url"]}|{activity["title"]}>\n'
               
               payload = {
-                  'text': Test message,
+                  'text': 'Test message',
                   'username': 'GitHub Notification Bot',
                   'icon_emoji': ':github:'
               }

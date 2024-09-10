@@ -46,7 +46,7 @@ jobs:
           ORG_NAME: ${{ secrets.ORG_NAME }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
-          python -c "
+          python - <<EOF
           import os
           import requests
           from github import Github
@@ -117,7 +117,7 @@ jobs:
                     # Send Slack reminders
           if all_activities:
                         send_slack_reminder(all_activities, slack_webhook_url)
-          "
+          EOF
       - name: Debug environment variables
         run: |
           echo "GITHUB_TOKEN: $GITHUB_TOKEN"

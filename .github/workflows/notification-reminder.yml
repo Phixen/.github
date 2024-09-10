@@ -85,14 +85,14 @@ jobs:
                   else:
                     print('Message sent successfully.')
                     
-              github_token = os.environ['GITHUB_TOKEN']
-              org_name = os.environ['ORG_NAME']
-              slack_webhook_url = os.environ['SLACK_WEBHOOK_URL']
-              org_members = get_org_members(org_name, github_token)
-              for member in org_members:
-                activities = get_pr_issue_activity(member, github_token)
-              if activities:
-                send_slack_reminder(member, activities, slack_webhook_url)
+          github_token = os.environ['GITHUB_TOKEN']
+          org_name = os.environ['ORG_NAME']
+          slack_webhook_url = os.environ['SLACK_WEBHOOK_URL']
+          org_members = get_org_members(org_name, github_token)
+          for member in org_members:
+            activities = get_pr_issue_activity(member, github_token)
+          if activities:
+            send_slack_reminder(member, activities, slack_webhook_url)
           "
       - name: Debug environment variables
         run: |

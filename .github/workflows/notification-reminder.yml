@@ -76,14 +76,20 @@ jobs:
               message = f'*Reminder for @{username}*\n'
               message += f'You have {len(activities)} unread PR/issue notifications:\n'
               for activity in activities:
+                print("Starting loop logic")
                   message += f'• {activity['type']}: <{activity['url']}|{activity['title']}>\n'
-                  payload = {'text': message, 'username': 'GitHub Notification Bot', 'icon_emoji': ':github:'}
+                  payload = {
+                    "text": "Test message",
+                    "username": "GitHub Notification Bot",
+                    "icon_emoji": ":github:"
+                    }
                   requests.post(webhook_url, json=payload)
                   
               github_token = os.environ['GITHUB_TOKEN']
               org_name = os.environ['ORG_NAME']
               slack_webhook_url = os.environ['SLACK_WEBHOOK_URL']
-                        
+
+              print("Starting main logic")
               org_members = get_org_members(org_name, github_token)
               for member in org_members:
                 activities = get_pr_issue_activity(member, github_token)

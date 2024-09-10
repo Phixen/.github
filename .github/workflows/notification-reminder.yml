@@ -77,7 +77,7 @@ jobs:
               message += f'You have {len(activities)} unread PR/issue notifications:\n'
               for activity in activities:
                   message += f'• {activity['type']}: <{activity['url']}|{activity['title']}>\n'
-                  payload = {"text": "Test message","username": "GitHub Notification Bot","icon_emoji": ":github:"}
+                  payload={'text': 'Test message','username': 'GitHub Reminder','icon_emoji':':github:'}
                   requests.post(webhook_url, json=payload)
                   
               github_token = os.environ['GITHUB_TOKEN']

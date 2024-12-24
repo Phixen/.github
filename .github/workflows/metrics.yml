@@ -14,4 +14,15 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           user: keploy
-          debug: yes
+          template: classic
+          base: header, activity, community, repositories, metadata
+          config_timezone: Asia/Calcutta
+          plugin_notable: yes
+          plugin_notable_from: organization
+          plugin_notable_repositories: yes
+          plugin_notable_types: commit
+          plugin_projects: yes
+          plugin_projects_limit: 4
+          plugin_sponsorships: yes
+          plugin_sponsorships_sections: amount, sponsorships
+          plugin_sponsorships_size: 24
